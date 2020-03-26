@@ -199,7 +199,10 @@ var MandrillAdapter = mandrillOptions => {
 
   function getDisplayName(user, appName) {
     if (clientsMode) {
-      var client = mandrillOptions.clientsMap[user.get(mandrillOptions.clientIdentifierKey)];
+      var client = mandrillOptions.clientsMap[mandrillOptions.fallbackClient];
+      if (user.get(mandrillOptions.clientIdentifierKey)) {
+        client = mandrillOptions.clientsMap[user.get(mandrillOptions.clientIdentifierKey)];
+      }
       return client.displayName;
     } else {
       return appName;
