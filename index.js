@@ -68,9 +68,9 @@ var MandrillAdapter = mandrillOptions => {
       }
     }
 
-    var subject = getTranslatableValueFromOptionsOrClientMap("verificationSubject", options.user);
-    var fromEmail = getValueFromOptionsOrClientMap("fromEmail");
-    var replyTo = getValueFromOptionsOrClientMap("replyTo");
+    var subject = getTranslatableValueFromOptionsOrClientsMap("verificationSubject", options.user);
+    var fromEmail = getValueFromOptionsOrClientsMap("fromEmail");
+    var replyTo = getValueFromOptionsOrClientsMap("replyTo");
 
     var message = {
       from_email: fromEmail,
@@ -88,7 +88,7 @@ var MandrillAdapter = mandrillOptions => {
 
     return new Promise((resolve, reject) => {
       if (mandrillOptions.verificationTemplateName || clientsMode) {
-        var template = getTranslatableValueFromOptionsOrClientMap("verificationTemplateName", options.user);
+        var template = getTranslatableValueFromOptionsOrClientsMap("verificationTemplateName", options.user);
         mandrill_client.messages.sendTemplate(
           {
             template_name: template,
@@ -127,9 +127,9 @@ var MandrillAdapter = mandrillOptions => {
       }
     }
 
-    var subject = getTranslatableValueFromOptionsOrClientMap("passwordResetSubject", options.user);
-    var fromEmail = getValueFromOptionsOrClientMap("fromEmail");
-    var replyTo = getValueFromOptionsOrClientMap("replyTo");
+    var subject = getTranslatableValueFromOptionsOrClientsMap("passwordResetSubject", options.user);
+    var fromEmail = getValueFromOptionsOrClientsMap("fromEmail");
+    var replyTo = getValueFromOptionsOrClientsMap("replyTo");
 
     var message = {
       from_email: fromEmail,
@@ -147,7 +147,7 @@ var MandrillAdapter = mandrillOptions => {
 
     return new Promise((resolve, reject) => {
       if (mandrillOptions.passwordResetTemplateName || clientsMode) {
-        var template = getTranslatableValueFromOptionsOrClientMap("passwordResetTemplateName", options.user);
+        var template = getTranslatableValueFromOptionsOrClientsMap("passwordResetTemplateName", options.user);
         mandrill_client.messages.sendTemplate(
           {
             template_name: template,
@@ -206,13 +206,13 @@ var MandrillAdapter = mandrillOptions => {
     }
   }
 
-  function getTranslatableValueFromOptionsOrClientMap(key, user) {
+  function getTranslatableValueFromOptionsOrClientsMap(key, user) {
     var userLang = user.get("language");
     var value = "";
     if (clientsMode) {
-      var client = mandrillOptions.clientMap[mandrillOptions.fallbackClient];
+      var client = mandrillOptions.clientsMap[mandrillOptions.fallbackClient];
       if (user.get(mandrillOptions.clientIdentifierKey)) {
-        client = mandrillOptions.clientMap[user.get(mandrillOptions.clientIdentifierKey)];
+        client = mandrillOptions.clientsMap[user.get(mandrillOptions.clientIdentifierKey)];
       }
       value = client[key].default;
       if (userLang) {
@@ -233,12 +233,12 @@ var MandrillAdapter = mandrillOptions => {
     return value;
   }
 
-  function getValueFromOptionsOrClientMap(key, user) {
+  function getValueFromOptionsOrClientsMap(key, user) {
     var value = "";
     if (clientsMode) {
-      var client = mandrillOptions.clientMap[mandrillOptions.fallbackClient];
+      var client = mandrillOptions.clientsMap[mandrillOptions.fallbackClient];
       if (user.get(mandrillOptions.clientIdentifierKey)) {
-        client = mandrillOptions.clientMap[user.get(mandrillOptions.clientIdentifierKey)];
+        client = mandrillOptions.clientsMap[user.get(mandrillOptions.clientIdentifierKey)];
       }
       value = client[key];
     } else {
@@ -248,7 +248,7 @@ var MandrillAdapter = mandrillOptions => {
   }
 
   function isClientsMapValid() {
-    for (let clientData of Object.values(mandrillOptions.clientsMap)) {
+    for (var clientData of Object.values(mandrillOptions.clientsMap)) {
       if (((clientData || {})["verificationSubject"] || {})["default"] == null ||
         ((clientData || {})["verificationTemplateName"] || {})["default"] == null ||
         ((clientData || {})["passwordResetSubject"] || {})["default"] == null ||
