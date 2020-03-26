@@ -13,9 +13,11 @@ var MandrillAdapter = mandrillOptions => {
     mandrillOptions.clientsMap
   ) {
     if (!mandrillOptions.clientIdentifierKey) {
-      throw 'If you want to use the multi client feature, you have to provide a client identifier key.'
+      throw 'MandrillAdapter: If you want to use the multi client feature, you have to provide a client identifier key.'
+    } else if(!mandrillOptions.fallbackClient) {
+      throw 'MandrillAdapter: If you want to use the multi client feature, you have to provide a fallback client name.'
     } else if (!isClientsMapValid()) {
-      throw 'If you want to use the multi client feature, you have to provide a valid client map.';
+      throw 'MandrillAdapter: If you want to use the multi client feature, you have to provide a valid client map.';
     } else {
       clientsMode = true;
     }
@@ -208,7 +210,10 @@ var MandrillAdapter = mandrillOptions => {
     var userLang = user.get("language");
     var value = "";
     if (clientsMode) {
-      var client = mandrillOptions.clientMap[user.get(mandrillOptions.clientIdentifierKey)];
+      var client = mandrillOptions.clientMap[mandrillOptions.fallbackClient];
+      if (user.get(mandrillOptions.clientIdentifierKey)) {
+        client = mandrillOptions.clientMap[user.get(mandrillOptions.clientIdentifierKey)];
+      }
       value = client[key].default;
       if (userLang) {
         userLang = userLang.toUpperCase();
@@ -231,7 +236,10 @@ var MandrillAdapter = mandrillOptions => {
   function getValueFromOptionsOrClientMap(key, user) {
     var value = "";
     if (clientsMode) {
-      var client = mandrillOptions.clientMap[user.get(mandrillOptions.clientIdentifierKey)];
+      var client = mandrillOptions.clientMap[mandrillOptions.fallbackClient];
+      if (user.get(mandrillOptions.clientIdentifierKey)) {
+        client = mandrillOptions.clientMap[user.get(mandrillOptions.clientIdentifierKey)];
+      }
       value = client[key];
     } else {
       value = mandrillOptions[key];
