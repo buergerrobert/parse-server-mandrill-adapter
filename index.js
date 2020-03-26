@@ -199,9 +199,10 @@ var MandrillAdapter = mandrillOptions => {
 
   function getDisplayName(user, appName) {
     if (clientsMode) {
+      var userClient = user.get(mandrillOptions.clientIdentifierKey);
       var client = mandrillOptions.clientsMap[mandrillOptions.fallbackClient];
-      if (user.get(mandrillOptions.clientIdentifierKey)) {
-        client = mandrillOptions.clientsMap[user.get(mandrillOptions.clientIdentifierKey)];
+      if (userClient && userClient in mandrillOptions.clientsMap) {
+        client = mandrillOptions.clientsMap[userClient];
       }
       return client.displayName;
     } else {
@@ -213,9 +214,10 @@ var MandrillAdapter = mandrillOptions => {
     var userLang = user.get("language");
     var value = "";
     if (clientsMode) {
+      var userClient = user.get(mandrillOptions.clientIdentifierKey);
       var client = mandrillOptions.clientsMap[mandrillOptions.fallbackClient];
-      if (user.get(mandrillOptions.clientIdentifierKey)) {
-        client = mandrillOptions.clientsMap[user.get(mandrillOptions.clientIdentifierKey)];
+      if (userClient && userClient in mandrillOptions.clientsMap) {
+        client = mandrillOptions.clientsMap[userClient];
       }
       value = client[key].default;
       if (userLang) {
@@ -239,9 +241,10 @@ var MandrillAdapter = mandrillOptions => {
   function getValueFromOptionsOrClientsMap(key, user) {
     var value = "";
     if (clientsMode) {
+      var userClient = user.get(mandrillOptions.clientIdentifierKey);
       var client = mandrillOptions.clientsMap[mandrillOptions.fallbackClient];
-      if (user.get(mandrillOptions.clientIdentifierKey)) {
-        client = mandrillOptions.clientsMap[user.get(mandrillOptions.clientIdentifierKey)];
+      if (userClient && userClient in mandrillOptions.clientsMap) {
+        client = mandrillOptions.clientsMap[userClient];
       }
       value = client[key];
     } else {
