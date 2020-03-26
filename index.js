@@ -69,8 +69,8 @@ var MandrillAdapter = mandrillOptions => {
     }
 
     var subject = getTranslatableValueFromOptionsOrClientsMap("verificationSubject", options.user);
-    var fromEmail = getValueFromOptionsOrClientsMap("fromEmail");
-    var replyTo = getValueFromOptionsOrClientsMap("replyTo");
+    var fromEmail = getValueFromOptionsOrClientsMap("fromEmail", options.user);
+    var replyTo = getValueFromOptionsOrClientsMap("replyTo", options.user);
 
     var message = {
       from_email: fromEmail,
@@ -128,8 +128,8 @@ var MandrillAdapter = mandrillOptions => {
     }
 
     var subject = getTranslatableValueFromOptionsOrClientsMap("passwordResetSubject", options.user);
-    var fromEmail = getValueFromOptionsOrClientsMap("fromEmail");
-    var replyTo = getValueFromOptionsOrClientsMap("replyTo");
+    var fromEmail = getValueFromOptionsOrClientsMap("fromEmail", options.user);
+    var replyTo = getValueFromOptionsOrClientsMap("replyTo", options.user);
 
     var message = {
       from_email: fromEmail,
