@@ -58,7 +58,69 @@ var server = ParseServer({
       // IMPORTANT: Make sure the email has the *|link|* merge tag,
       //            it will render the url to verify the user.
       verificationTemplateName: 'email-verification-template-name',
-
+      
+      // If you have localized templates, you can append the country code of the language like this:
+      verificationTemplateNameEN: 'email-verification-template-name-en'
+      // The language of the user (key 'language' in the user object) will be used to match the template
+      // suffix (in this case 'EN'). If there is no match, the fallback will be the 'verificationTemplateName'
+      
+      /************************************************
+       * If you want to use the multi client feature: *
+       ***********************************************/
+      // The key in the user object to find out which client he is using. In this case the content 
+      // has to match either 'clientA' or 'clientB'
+      clientIdentifierKey: 'registeredApp',
+      // The fallback client that will be used when there is no data in the field 'clientIdentifierKey' or no match
+      // in the clientsMap
+      fallbackClient: 'clientA',
+      clientsMap: {
+        // The root level keys have to match the values of the user object field defined in 'clientIdentifierKey'
+        clientA: {
+          displayName: 'Client A',
+          fromEmail: 'client-a@example.org',
+          replyTo: 'client-a@example.org',
+          // For the fields 'verificationSubject', 'verificationTemplateName', 'passwordResetSubject' and 'passwordResetTemplateName' 
+          // you always need to specify a default value and it's possible to also use country codes that will be matched with the users
+          // language to send him localized emails. If there is no match for his language, the 'default' value will be used
+          verificationSubject: {
+            default: "Please verify your email address",
+            DE: "Bitte verifiziere deine Email Adresse"
+          },
+          verificationTemplateName: {
+            default: "verification-template-client-a",
+            DE: "verification-template-client-a-de"
+          },
+          passwordResetSubject: {
+            default: "Password reset for *|appname|*",
+            DE: "Passwort zurücksetzen für *|appname|*"
+          },
+          passwordResetTemplateName: {
+            default: "password-reset-template-client-a",
+            DE: "password-reset-template-client-a-de"
+          }
+        },
+        clientB: {
+          displayName: 'Client B',
+          fromEmail: 'client-b@example.org',
+          replyTo: 'client-b@example.org',
+          verificationSubject: {
+            default: "Please verify your email address",
+            EN: "Please verify your email address for *|appname|*"
+          },
+          verificationTemplateName: {
+            default: "verification-template-client-b",
+            EN: "verification-template-client-b-en",
+          },
+          passwordResetSubject: {
+            default: "Password reset",
+            EN: "Password reset for *|appname|*"
+          },
+          passwordResetTemplateName: {
+            default: "password-reset-template-client-b",
+            EN: "password-reset-template-client-b-en"
+          }
+        }
+      }
     }
   }
   ...
