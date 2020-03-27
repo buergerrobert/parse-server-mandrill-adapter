@@ -14,7 +14,7 @@ var MandrillAdapter = mandrillOptions => {
   ) {
     if (!mandrillOptions.clientIdentifierKey) {
       throw 'MandrillAdapter: If you want to use the multi client feature, you have to provide a client identifier key.'
-    } else if(!mandrillOptions.fallbackClient) {
+    } else if (!mandrillOptions.fallbackClient) {
       throw 'MandrillAdapter: If you want to use the multi client feature, you have to provide a fallback client name.'
     } else if (!isClientsMapValid()) {
       throw 'MandrillAdapter: If you want to use the multi client feature, you have to provide a valid client map.';
